@@ -28,17 +28,19 @@ jobs:
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-
-
-    - name: 提交 result.md
+    - name: Configure Git
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+        git remote set-url origin https://${{ secrets.MY_GITHUB_USERNAME }}:${{ secrets.MY_GITHUB_TOKEN }}@github.com/${{ github.repository }}
+    
+    - name: Commit result.md
+      run: |
         git add result.md
         git commit -m "Update result.md"
         git push
 
-    - name: 部署到 GitHub 页面
+    - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.MY_GITHUB_TOKEN }}
