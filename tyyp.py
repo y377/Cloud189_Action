@@ -178,12 +178,9 @@ for i in range(len(ty_username)):
             description = response.json()['description']
             print(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
-    if __name__ == "__main__":
-        main()
-
-    # 将签到结果保存到 result.md 文件
-    with open("result.md", "a", encoding="utf-8") as f:
-        f.write(f"""
+         # 将签到结果保存到 result.md 文件
+        with open("result.md", "a", encoding="utf-8") as f:
+            f.write(f"""
 # 天翼云盘签到结果
 
 - 帐号{i+1}：{res1}
@@ -191,6 +188,9 @@ for i in range(len(ty_username)):
 - 帐号{i+1}抽奖2：{res3}
 - 帐号{i+1}抽奖3：{res4}
 """)
+    
+    if __name__ == "__main__":
+        main()
 
 
 
