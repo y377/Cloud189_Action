@@ -32,9 +32,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: output
-        path: output.txt
+        path: output
+
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
-      with: 
+      with:
         folder: output
         clean: true
