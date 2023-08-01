@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ master ]
   schedule:
-    - cron: '15 6 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
   watch:
     types: started
@@ -33,4 +33,3 @@ jobs:
         #QYWX_AGENTID: ${{ secrets.QYWX_AGENTID }}
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-        TZ: Asia/Shanghai
