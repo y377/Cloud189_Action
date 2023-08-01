@@ -28,20 +28,8 @@ jobs:
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: Configure Git
-      run: |
-        git config user.name "y377"
-        git config user.email "csever@qq.com"
-        git remote set-url origin https://${{ secrets.MY_GITHUB_USERNAME }}:${{ secrets.MY_GITHUB_TOKEN }}@github.com/${{ github.repository }}
-    
-    - name: Commit result.md
-      run: |
-        git add result.md
-        git commit -m "Update result.md"
-        git push
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Upload result file
+      uses: actions/upload-artifact@v2
       with:
-        github_token: ${{ secrets.MY_GITHUB_TOKEN }}
-        publish_dir: ./
+        name: result
+        path: result.md
