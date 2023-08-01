@@ -1,9 +1,9 @@
 name: 天翼云盘签到
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   schedule:
     - cron: '30 5,17 * * *'
   workflow_dispatch:
@@ -13,26 +13,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    #if: github.event.repository.owner.id == github.event.sender.id
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+
     - name: 安装环境
-      run:
-        #python -m pip install --upgrade pip
-        pip install -r requirements.txt 
-    - name: 签到
       run: |
-        echo "# 签到日志" > log.md
-        python3 ./tyyp.py
+        pip install datetime
+
+    - name: 签到
       env:
-        TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
+        TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}  
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: 上传签到日志
-      uses: actions/upload-artifact@v2
-      with:
-        name: 签到日志
-        path: log.md
+      run: |
+        python3 ./tyyp.py
+
+    - name: Remove old markdown
+      run: |
+        git rm -f 签到结果_*.md
+
+    - name: Upload markdown result  
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update result" -a
+        git push
