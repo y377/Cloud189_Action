@@ -1,11 +1,11 @@
 name: 天翼云盘签到
 on:
   push:
-    branches: [master]
+    branches: [ master ]
   pull_request:
-    branches: [master]
+    branches: [ master ]
   schedule:
-    - cron: '30 5,17 * * *'
+    - cron:  '30 5,17 * * *'
   workflow_dispatch:
   watch:
     types: started
@@ -13,34 +13,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-
     - name: 安装环境
-      run: |
-        pip install datetime
-
+      run:
+        pip install -r requirements.txt
     - name: 签到
+      run: |
+        python3 ./tyyp.py > output.txt
       env:
-        TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}  
+        TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-      run: |
-        python3 ./tyyp.py
-
-    - name: Remove old markdown
-      run: |
-        git rm -f 签到结果_*.md
-
-    - name: Upload markdown result  
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Update result" -a
-        git push
+    - name: 上传输出
+      uses: actions/upload-artifact@v2
+      with:
+        name: output
+        path: output.txt
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with: 
+        folder: output
+        clean: true
