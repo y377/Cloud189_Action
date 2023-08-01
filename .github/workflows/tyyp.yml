@@ -24,13 +24,7 @@ jobs:
         pip install -r requirements.txt
     - name: 签到
       run: |
-        python3 ./tyyp.py > output.txt
+        python3 ./tyyp.py
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: 更新 README 
-      run: |
-        api_url="https://api.github.com/repos/$GITHUB_REPOSITORY/contents/README.md"
-        # 构建 README 内容 
-        echo "签到结果: $(cat output.txt)" > readme.md
-        curl -X PUT -H "Authorization: token $GITHUB_TOKEN" --data-binary @readme.md $api_url
