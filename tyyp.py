@@ -13,10 +13,6 @@ import os
 # 变量 ty_username（手机号）,ty_password（密码）
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
-
-
-
-
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
 B64MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -26,11 +22,8 @@ s = requests.Session()
 
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
-
-
     def int2char(a):
         return BI_RM[a]
-
 
     def b64tohex(a):
         d = ""
@@ -185,7 +178,19 @@ for i in range(len(ty_username)):
             description = response.json()['description']
             print(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
+    # 修改此部分，输出结果为 Markdown 格式
+    result_md = f"""
+# 天翼云盘签到结果
 
+- 帐号{i+1}：{res1}
+- 帐号{i+1}抽奖1：{res2}
+- 帐号{i+1}抽奖2：{res3}
+- 帐号{i+1}抽奖3：{res4}
+    """
+
+    # 将结果写入文件
+    with open("README.md", "a", encoding="utf-8") as f:
+        f.write(result_md)
     if __name__ == "__main__":
 
         main()
