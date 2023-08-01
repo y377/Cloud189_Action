@@ -178,7 +178,11 @@ for i in range(len(ty_username)):
             description = response.json()['description']
             print(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
-         # 将签到结果保存到 result.md 文件
+        except Exception as e:
+            # 处理异常情况
+            print(f"帐号{i+1}出现错误：{str(e)}")
+            res1 = f"帐号{i+1}出现错误：{str(e)}"
+        # 将签到结果保存到 result.md 文件
         with open("result.md", "a", encoding="utf-8") as f:
             f.write(f"""
 # 天翼云盘签到结果
