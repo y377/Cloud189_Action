@@ -28,10 +28,19 @@ jobs:
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: Upload result file
+
+
+    - uses: actions/checkout@v2
+    
+    - name: Run login script
+      run: |
+        python login.py | tee result.md
+        
+    - name: Copy result file to root  
+      run: cp result.md /
+    
+    - name: Upload root folder
       uses: actions/upload-artifact@v2
       with:
-        name: result
-        path: result.md
-    - name: Copy to docs folder
-      run: cp result.md docs/
+        name: root
+        path: /
