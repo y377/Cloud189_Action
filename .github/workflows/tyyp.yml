@@ -33,3 +33,5 @@ jobs:
       with:
         name: result
         path: result.md
+    - name: Copy to docs folder
+      run: cp result.md docs/
