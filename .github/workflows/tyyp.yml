@@ -24,16 +24,7 @@ jobs:
         pip install -r requirements.txt
     - name: 签到
       run: |
-        python3 ./tyyp.py | tee result.md
+        python3 ./tyyp.py
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-        
-    - name: Copy result file to root  
-      run: cp result.md /
-    
-    - name: Upload root folder
-      uses: actions/upload-artifact@v2
-      with:
-        name: root
-        path: /
