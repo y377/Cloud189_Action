@@ -14,14 +14,8 @@ import os
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
 
-# GitHub Pages 
-import datetime
-now = datetime.datetime.now()
-result_file = f'签到结果_{now.year}_{now.month}_{now.day}.md'
 
-def save_result(content):
-    with open(result_file, 'a') as f:
-        f.write(content + '\n')
+
 
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
@@ -191,16 +185,7 @@ for i in range(len(ty_username)):
             description = response.json()['description']
             print(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
-        #message = res1+res2+res3+res4
-        #Push(contents=message)
-
 
     if __name__ == "__main__":
 
         main()
-# 保存结果
-save_result(f'## 签到结果 {now}')  
-save_result(res1)
-save_result(res2) 
-save_result(res3)
-save_result(res4)
