@@ -1,4 +1,5 @@
-# 天翼云盘签到
+## 天翼云盘签到
+## [![天翼云盘签到](https://github.com/y377/Cloud189_Action/actions/workflows/tyyp.yml/badge.svg?branch=main)](https://github.com/y377/Cloud189_Action/actions/workflows/tyyp.yml)
 
 根据[kxs2018/daily_sign](https://github.com/kxs2018/daily_sign)删改而来。
 
