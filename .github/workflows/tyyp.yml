@@ -28,13 +28,6 @@ jobs:
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-
-
-    - uses: actions/checkout@v2
-    
-    - name: Run login script
-      run: |
-        python login.py | tee result.md
         
     - name: Copy result file to root  
       run: cp result.md /
