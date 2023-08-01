@@ -30,8 +30,8 @@ jobs:
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
     - name: Configure Git
       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        git config user.name "y377"
+        git config user.email "csever@qq.com"
         git remote set-url origin https://${{ secrets.MY_GITHUB_USERNAME }}:${{ secrets.MY_GITHUB_TOKEN }}@github.com/${{ github.repository }}
     
     - name: Commit result.md
