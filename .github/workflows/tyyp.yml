@@ -24,7 +24,14 @@ jobs:
         pip install -r requirements.txt
     - name: 签到
       run: |
-        python3 ./tyyp.py
+        python3 ./tyyp.py > output.txt
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
+    - name: 提交更改并推送至 GitHub 页面分支
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add output.txt
+        git commit -m "Add output.txt"
+        git push
