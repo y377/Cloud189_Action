@@ -1,11 +1,13 @@
 import time
 import re
-import os
-import rsa
+import json
 import base64
 import hashlib
+import urllib.parse, hmac
+import rsa
 import requests
 import random
+import os
 
 # 变量 ty_username（手机号）,ty_password（密码）
 ty_username = os.getenv("TYYP_USERNAME").split('&')
