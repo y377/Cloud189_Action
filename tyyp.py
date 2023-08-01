@@ -1,3 +1,20 @@
+#!/usr/bin/python3
+# -- coding: utf-8 --
+# @Time : 2023/4/8 9:23
+#作者：https://www.52pojie.cn/forum.php?mod=viewthread&tid=1784111&highlight=%C7%A9%B5%BD
+# -------------------------------
+# cron "30 4 * * *" script-path=xxx.py,tag=匹配cron用
+# const $ = new Env('天翼云盘签到');
+
+# #!/usr/bin/python3
+# # -- coding: utf-8 --
+# # @Time : 2023/4/4 9:23
+# #作者：https://www.52pojie.cn/thread-1231190-1-1.html
+# # -------------------------------
+# # cron "30 4 * * *" script-path=xxx.py,tag=匹配cron用
+# # const $ = new Env('天翼云盘签到');
+#
+
 
 import time
 import re
@@ -13,6 +30,11 @@ import os
 # 变量 ty_username（手机号）,ty_password（密码）
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
+
+# 推送加
+#plustoken = os.getenv("plustoken")
+
+
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
 B64MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -22,8 +44,17 @@ s = requests.Session()
 
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
+
+    #推送函数
+    
+    #def Push(contents):
+        # 推送加
+    #    json = {"token": plustoken, 'title': '天翼云签到', 'content': contents.replace('\n', '<br>'), "template": "json"}
+    #    resp = requests.post(f'http://www.pushplus.plus/send', json=json, headers=headers).json()
+    #    print('push+推送成功' if resp['code'] == 200 else 'push+推送失败')
     def int2char(a):
         return BI_RM[a]
+
 
     def b64tohex(a):
         d = ""
@@ -66,7 +97,7 @@ for i in range(len(ty_username)):
 
 
     def login(ty_username, ty_password):
-
+        # https://m.cloud.189.cn/login2014.jsp?redirectURL=https://m.cloud.189.cn/zhuanti/2021/shakeLottery/index.html
         url = ""
         urlToken = "https://m.cloud.189.cn/udb/udb_login.jsp?pageId=1&pageKey=default&clientType=wap&redirectURL=https://m.cloud.189.cn/zhuanti/2021/shakeLottery/index.html"
         s = requests.Session()
@@ -178,14 +209,22 @@ for i in range(len(ty_username)):
             description = response.json()['description']
             print(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
+        #message = res1+res2+res3+res4
+        #Push(contents=message)
 
-    
+
+    #def lambda_handler(event, context):  # aws default
+    #    main()
+
+
+    #def main_handler(event, context):  # tencent default
+     #   main()
+
+
+    #def handler(event, context):  # aliyun default
+    #    main()
+
+
     if __name__ == "__main__":
+        #time.sleep(random.randint(5, 30))
         main()
-
-
-
-
-
-
-
