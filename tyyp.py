@@ -15,7 +15,7 @@
 # # const $ = new Env('天翼云盘签到');
 #
 
-
+import logging
 import time
 import re
 import json
@@ -43,7 +43,7 @@ s = requests.Session()
 
 
 for i in range(len(ty_username)):
-    print(f'开始执行帐号{i+1}')
+    logging.info(f'开始执行帐号{i+1}')
 
     #推送函数
     
@@ -51,7 +51,7 @@ for i in range(len(ty_username)):
         # 推送加
     #    json = {"token": plustoken, 'title': '天翼云签到', 'content': contents.replace('\n', '<br>'), "template": "json"}
     #    resp = requests.post(f'http://www.pushplus.plus/send', json=json, headers=headers).json()
-    #    print('push+推送成功' if resp['code'] == 200 else 'push+推送失败')
+    #    logging.info('push+推送成功' if resp['code'] == 200 else 'push+推送失败')
     def int2char(a):
         return BI_RM[a]
 
@@ -106,19 +106,19 @@ for i in range(len(ty_username)):
         match = re.search(pattern, r.text)  # 在文本中搜索匹配
         if match:  # 如果找到匹配
             url = match.group()  # 获取匹配的字符串
-            # print(url)  # 打印url
+            # logging.info(url)  # 打印url
         else:  # 如果没有找到匹配
-            print("没有找到url")
+            logging.info("没有找到url")
 
         r = s.get(url)
-        # print(r.text)
+        # logging.info(r.text)
         pattern = r"<a id=\"j-tab-login-link\"[^>]*href=\"([^\"]+)\""  # 匹配id为j-tab-login-link的a标签，并捕获href引号内的内容
         match = re.search(pattern, r.text)  # 在文本中搜索匹配
         if match:  # 如果找到匹配
             href = match.group(1)  # 获取捕获的内容
-            # print("href:" + href)  # 打印href链接
+            # logging.info("href:" + href)  # 打印href链接
         else:  # 如果没有找到匹配
-            print("没有找到href链接")
+            logging.info("没有找到href链接")
 
         r = s.get(href)
         captchaToken = re.findall(r"captchaToken' value='(.+?)'", r.text)[0]
@@ -148,9 +148,9 @@ for i in range(len(ty_username)):
         }
         r = s.post(url, data=data, headers=headers, timeout=5)
         if (r.json()['result'] == 0):
-            print(r.json()['msg'])
+            logging.info(r.json()['msg'])
         else:
-            print(r.json()['msg'])
+            logging.info(r.json()['msg'])
         redirect_url = r.json()['toUrl']
         r = s.get(redirect_url)
         return s
@@ -172,10 +172,10 @@ for i in range(len(ty_username)):
         response = s.get(surl, headers=headers)
         netdiskBonus = response.json()['netdiskBonus']
         if (response.json()['isSign'] == "false"):
-            print(f"未签到，签到获得{netdiskBonus}M空间")
+            logging.info(f"未签到，签到获得{netdiskBonus}M空间")
             res1 = f"未签到，签到获得{netdiskBonus}M空间"
         else:
-            print(f"已经签到过了，签到获得{netdiskBonus}M空间")
+            logging.info(f"已经签到过了，签到获得{netdiskBonus}M空间")
             res1 = f"已经签到过了，签到获得{netdiskBonus}M空间"
 
         headers = {
@@ -186,28 +186,28 @@ for i in range(len(ty_username)):
         }
         response = s.get(url, headers=headers)
         if ("errorCode" in response.text):
-            print(response.text)
+            logging.info(response.text)
             res2 = ""
         else:
             description = response.json()['description']
-            print(f"抽奖获得{description}")
+            logging.info(f"抽奖获得{description}")
             res2 = f"抽奖获得{description}"
         response = s.get(url2, headers=headers)
         if ("errorCode" in response.text):
-            print(response.text)
+            logging.info(response.text)
             res3 = ""
         else:
             description = response.json()['description']
-            print(f"抽奖获得{description}")
+            logging.info(f"抽奖获得{description}")
             res3 = f"抽奖获得{description}"
 
         response = s.get(url3, headers=headers)
         if ("errorCode" in response.text):
-            print(response.text)
+            logging.info(response.text)
             res4 = ""
         else:
             description = response.json()['description']
-            print(f"链接3抽奖获得{description}")
+            logging.info(f"链接3抽奖获得{description}")
             res4 = f"链接3抽奖获得{description}"
         #message = res1+res2+res3+res4
         #Push(contents=message)
@@ -228,3 +228,8 @@ for i in range(len(ty_username)):
     if __name__ == "__main__":
         #time.sleep(random.randint(5, 30))
         main()
+# 设置日志配置
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%F %T')
+logger = logging.getLogger()
+file_handler = logging.FileHandler('log.md')
+logger.addHandler(file_handler)
