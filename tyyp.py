@@ -13,6 +13,11 @@ import os
 # 变量 ty_username（手机号）,ty_password（密码）
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
+# 初始化结果变量
+res1 = ""
+res2 = ""
+res3 = ""
+res4 = ""
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
 B64MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
