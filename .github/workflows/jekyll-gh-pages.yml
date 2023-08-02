@@ -4,7 +4,8 @@ name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches:
+      - "main"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -36,7 +37,10 @@ jobs:
           source: ./
           destination: ./_site
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v2
+          with:
+            name: tyyp-logs  # 设置 artifact 的名称
+            path: ./_site       # 设置要上传的文件路径
 
   # Deployment job
   deploy:
@@ -49,8 +53,8 @@ jobs:
       - name: Download tyyp logs
         uses: actions/download-artifact@v2
         with:
-          name: jekyll-site
-          path: ./_site
+          name: tyyp-logs  # 指定要下载的 artifact 的名称
+          path: ./_site       # 指定下载后的目标文件夹
       - name: 将签到日志复制到站点目录
         run: |
           cp ./tyyp-logs/log.md ./_site/log.md
