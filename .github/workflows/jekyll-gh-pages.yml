@@ -49,12 +49,11 @@ jobs:
       - name: Download tyyp logs
         uses: actions/download-artifact@v2
         with:
-          name: tyyp-logs  # 指定要下载的 artifact 的名称
+          name: jekyll-site
+          path: ./_site
       - name: 将签到日志复制到站点目录
         run: |
-          unzip -qq tyyp-logs.zip
-          tar -xf artifact.tar
-          cp artifact/log.md ./_site/log.md
+          cp ./tyyp-logs/log.md ./_site/log.md
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
