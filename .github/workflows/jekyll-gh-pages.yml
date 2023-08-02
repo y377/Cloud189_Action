@@ -55,3 +55,6 @@ jobs:
         with:
           name: tyyp-logs  # 指定要下载的 artifact 的名称
           path: ./_site       # 指定下载后的目标文件夹
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
