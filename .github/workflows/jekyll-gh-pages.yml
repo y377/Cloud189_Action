@@ -47,7 +47,7 @@ jobs:
     needs: build
     steps:
       - name: Download tyyp logs
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v1
         with:
           name: tyyp-logs  # 指定要下载的 artifact 的名称
       - name: 将签到日志复制到站点目录
