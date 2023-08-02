@@ -1,11 +1,11 @@
 name: 天翼云盘签到
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   schedule:
-    - cron:  '30 5,17 * * *'
+    - cron: '30 5,17 * * *'
   workflow_dispatch:
   watch:
     types: started
@@ -14,24 +14,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: 安装环境
-      run:
-        pip install -r requirements.txt
-    - name: 签到
-      run: |
-        python3 ./tyyp.py | tee log.md
-      env:
-        TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
-        TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: 上传签到记录
-      uses: actions/upload-pages-artifact@v1
-      with:
-        name: tyyp-logs  # 设置 artifact 的名称
-        path: .  # 设置要上传的文件路径
-      run: |
-        ls -lR  # 列出当前工作目录下所有文件和文件夹的详细信息，包括子文件夹
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: 安装环境
+        run: pip install -r requirements.txt
+      - name: 签到
+        run: |
+          python3 ./tyyp.py | tee log.md
+        env:
+          TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
+          TYYP_PSW: ${{ secrets.TYYP_PSW }}
+      - name: 上传签到记录
+        run: |
+          # 将 log.md 文件作为一个 artifact 上传
+          echo "::set-output name=artifact-path::log.md"
+        id: upload-artifact
+        continue-on-error: true
+      - name: 创建工件
+        uses: actions/upload-artifact@v2
+        with:
+          name: tyyp-logs
+          path: ${{ steps.upload-artifact.outputs.artifact-path }}
