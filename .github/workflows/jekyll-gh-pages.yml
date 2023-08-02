@@ -53,12 +53,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: tyyp-logs  # 指定要下载的 artifact 的名称
-          path: ./tyyp-logs.zip      
-      - name: 解压 tyyp logs
-        run: unzip tyyp-logs.zip
+          path: ./tyyp-logs      
+
       - name: 将签到日志复制到站点目录
         run: |
-          cp ./log.md ./_site/log.md
+          cp -r ./tyyp-logs/. ./_site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
