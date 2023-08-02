@@ -28,6 +28,9 @@ jobs:
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
-    - name: Upload artifact
+    - name: 上传签到记录
       # Automatically uploads an artifact from the './_site' directory by default
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v2
+      with:
+        name: tyyp-logs  # 设置 artifact 的名称
+        path: log.md  # 设置要上传的文件路径
