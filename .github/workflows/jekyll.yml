@@ -74,11 +74,13 @@ jobs:
           publish_dir: ./_site
 
       - name: Set Deployment URL
-        run: echo "URL=${{ steps.deployment.outputs.pages_url }}" >> $GITHUB_ENV
+        run: |
+          echo "URL=${{ steps.deployment.outputs.pages_url }}" >> $GITHUB_ENV
 
   show_url:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Show Deployment URL
-        run: echo "Deployment URL: ${{ env.URL }}"
+        run: |
+          echo "Deployment URL: ${{ env.URL }}"
