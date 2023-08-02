@@ -24,7 +24,10 @@ jobs:
         pip install -r requirements.txt
     - name: 签到
       run: |
-        python3 ./tyyp.py
+        python3 ./tyyp.py | tee log.md
       env:
         TYYP_USERNAME: ${{ secrets.TYYP_USERNAME }}
         TYYP_PSW: ${{ secrets.TYYP_PSW }}
+    - name: Upload artifact
+      # Automatically uploads an artifact from the './_site' directory by default
+      uses: actions/upload-pages-artifact@v1
