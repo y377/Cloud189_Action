@@ -52,7 +52,8 @@ jobs:
           name: tyyp-logs  # 指定要下载的 artifact 的名称
       - name: 将签到日志复制到站点目录
         run: |
-          cp ${{ github.workspace }}/log.md ./_site/log.md
+          unzip tyyp.logs.zip -d artifact  # 解压 artifact
+          cp artifact/log.md ./_site/log.md
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
