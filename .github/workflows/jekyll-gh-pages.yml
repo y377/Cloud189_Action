@@ -46,6 +46,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download tyyp logs
+        uses: actions/download-artifact@v2
+        with:
+          name: tyyp-logs  # 指定要下载的 artifact 的名称
+      - name: Copy tyyp logs to site directory
+        run: |
+          cp ${{ github.workspace }}/tyyp-logs/log.md _site/log.md
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
