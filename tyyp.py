@@ -9,8 +9,10 @@ import requests
 import random
 import os
 
+
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
+
 
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
@@ -18,11 +20,13 @@ B64MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 s = requests.Session()
 
+
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
    
     def int2char(a):
         return BI_RM[a]
+
 
     def b64tohex(a):
         d = ""
@@ -52,17 +56,20 @@ for i in range(len(ty_username)):
             d += int2char(c << 2)
         return d
 
+
     def rsa_encode(j_rsakey, string):
         rsa_key = f"-----BEGIN PUBLIC KEY-----\n{j_rsakey}\n-----END PUBLIC KEY-----"
         pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(rsa_key.encode())
         result = b64tohex((base64.b64encode(rsa.encrypt(f'{string}'.encode(), pubkey))).decode())
         return result
 
+
     def calculate_md5_sign(params):
         return hashlib.md5('&'.join(sorted(params.split('&'))).encode('utf-8')).hexdigest()
 
+
     def login(ty_username, ty_password):
-      
+        
         url = ""
         urlToken = "https://m.cloud.189.cn/udb/udb_login.jsp?pageId=1&pageKey=default&clientType=wap&redirectURL=https://m.cloud.189.cn/zhuanti/2021/shakeLottery/index.html"
         s = requests.Session()
@@ -149,23 +156,43 @@ for i in range(len(ty_username)):
             "Host": "m.cloud.189.cn",
             "Accept-Encoding": "gzip, deflate",
         }
-        # 第一个抽奖链接
-        response1 = s.get(url, headers=headers)
-        data1 = response1.json()
-        description1 = data1['description']
-        print(f"第一个抽奖获得{description1}")
+        response = requests.get(url1)
         
-        # 第二个抽奖链接  
-        response2 = s.get(url2, headers=headers)
-        data2 = response2.json()
-        description2 = data2['description'] 
-        print(f"第二个抽奖获得{description2}")
+        # 保留原有的错误处理逻辑
+        if ("errorCode" in response.text):
+        print(response.text)
+        res2 = ""
+        else:
+        # 修改这里
+        data = response.json()
+        prize_name = data['prizeName']  
+        print("第一个抽奖获得:"+ prize_name)
+        res2 = f"第一个抽奖获得:{prize_name}"
         
-        # 第三个抽奖链接
-        response3 = s.get(url3, headers=headers)  
-        data3 = response3.json()
-        description3 = data3['description']
-        print(f"第三个抽奖获得{description3}")
+        # 第二个抽奖也保留相同的错误处理逻辑
+        response = requests.get(url2)
+        if ("errorCode" in response.text):
+        print(response.text)
+        res3 = ""  
+        else:
+        # 修改这里
+        data = response.json()
+        prize_name = data['prizeName']
+        print("第二个抽奖获得:"+ prize_name)
+        res3 = f"第二个抽奖获得:{prize_name}"
+        
+        # 第三个抽奖也同样  
+        # ......
+
+        response = s.get(url3, headers=headers)
+        if ("errorCode" in response.text):
+            print(response.text)
+            res4 = ""
+        else:
+            description = response.json()['description']
+            print(f"链接3抽奖获得{description}")
+            res4 = f"链接3抽奖获得{description}"
+
     if __name__ == "__main__":
         
         main()
