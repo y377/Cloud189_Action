@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: 打印ip地址
-        run: echo "My IP address is $(curl -s ifconfig.me)"
+        run: echo -e "\033[32mIP: $(curl -s ifconfig.me)\033[0m"
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
