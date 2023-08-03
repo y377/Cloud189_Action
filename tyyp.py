@@ -45,13 +45,14 @@ s = requests.Session()
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
 
-    #推送函数
-    
-    #def Push(contents):
-        # 推送加
-    #    json = {"token": plustoken, 'title': '天翼云签到', 'content': contents.replace('\n', '<br>'), "template": "json"}
-    #    resp = requests.post(f'http://www.pushplus.plus/send', json=json, headers=headers).json()
-    #    print('push+推送成功' if resp['code'] == 200 else 'push+推送失败')
+    def get_prize_capacity(response):
+        try:
+            data = response.json()
+            if "description" in data:
+                return data["description"]
+        except Exception as e:
+            pass
+        return "未知容量"
     def int2char(a):
         return BI_RM[a]
 
