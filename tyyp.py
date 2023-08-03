@@ -1,21 +1,3 @@
-#!/usr/bin/python3
-# -- coding: utf-8 --
-# @Time : 2023/4/8 9:23
-#作者：https://www.52pojie.cn/forum.php?mod=viewthread&tid=1784111&highlight=%C7%A9%B5%BD
-# -------------------------------
-# cron "30 4 * * *" script-path=xxx.py,tag=匹配cron用
-# const $ = new Env('天翼云盘签到');
-
-# #!/usr/bin/python3
-# # -- coding: utf-8 --
-# # @Time : 2023/4/4 9:23
-# #作者：https://www.52pojie.cn/thread-1231190-1-1.html
-# # -------------------------------
-# # cron "30 4 * * *" script-path=xxx.py,tag=匹配cron用
-# # const $ = new Env('天翼云盘签到');
-#
-
-
 import time
 import re
 import json
@@ -27,13 +9,8 @@ import requests
 import random
 import os
 
-# 变量 ty_username（手机号）,ty_password（密码）
 ty_username = os.getenv("TYYP_USERNAME").split('&')
 ty_password = os.getenv("TYYP_PSW").split('&')
-
-# 推送加
-#plustoken = os.getenv("plustoken")
-
 
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
 
@@ -41,21 +18,11 @@ B64MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 s = requests.Session()
 
-
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
-
-    def get_prize_capacity(response):
-        try:
-            data = response.json()
-            if "description" in data:
-                return data["description"]
-        except Exception as e:
-            pass
-        return "未知容量"
+   
     def int2char(a):
         return BI_RM[a]
-
 
     def b64tohex(a):
         d = ""
@@ -85,40 +52,37 @@ for i in range(len(ty_username)):
             d += int2char(c << 2)
         return d
 
-
     def rsa_encode(j_rsakey, string):
         rsa_key = f"-----BEGIN PUBLIC KEY-----\n{j_rsakey}\n-----END PUBLIC KEY-----"
         pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(rsa_key.encode())
         result = b64tohex((base64.b64encode(rsa.encrypt(f'{string}'.encode(), pubkey))).decode())
         return result
 
-
     def calculate_md5_sign(params):
         return hashlib.md5('&'.join(sorted(params.split('&'))).encode('utf-8')).hexdigest()
 
-
     def login(ty_username, ty_password):
-        # https://m.cloud.189.cn/login2014.jsp?redirectURL=https://m.cloud.189.cn/zhuanti/2021/shakeLottery/index.html
+      
         url = ""
         urlToken = "https://m.cloud.189.cn/udb/udb_login.jsp?pageId=1&pageKey=default&clientType=wap&redirectURL=https://m.cloud.189.cn/zhuanti/2021/shakeLottery/index.html"
         s = requests.Session()
         r = s.get(urlToken)
-        pattern = r"https?://[^\s'\"]+"  # 匹配以http或https开头的url
-        match = re.search(pattern, r.text)  # 在文本中搜索匹配
-        if match:  # 如果找到匹配
-            url = match.group()  # 获取匹配的字符串
-            # print(url)  # 打印url
-        else:  # 如果没有找到匹配
+        pattern = r"https?://[^\s'\"]+"  
+        match = re.search(pattern, r.text)  
+        if match:  
+            url = match.group()  
+            
+        else:  
             print("没有找到url")
 
         r = s.get(url)
-        # print(r.text)
-        pattern = r"<a id=\"j-tab-login-link\"[^>]*href=\"([^\"]+)\""  # 匹配id为j-tab-login-link的a标签，并捕获href引号内的内容
-        match = re.search(pattern, r.text)  # 在文本中搜索匹配
-        if match:  # 如果找到匹配
-            href = match.group(1)  # 获取捕获的内容
-            # print("href:" + href)  # 打印href链接
-        else:  # 如果没有找到匹配
+        
+        pattern = r"<a id=\"j-tab-login-link\"[^>]*href=\"([^\"]+)\""  
+        match = re.search(pattern, r.text)  
+        if match:  
+            href = match.group(1)  
+            
+        else:  
             print("没有找到href链接")
 
         r = s.get(href)
@@ -156,17 +120,7 @@ for i in range(len(ty_username)):
         r = s.get(redirect_url)
         return s
 
-    def get_prize_capacity(response):
-        try:
-            data = response.json()
-            if "description" in data:
-                return data["description"]
-        except Exception as e:
-            pass
-        return "未知容量"
 
-    # 省略前面的部分...
-    
     def main():
         s = login(ty_username, ty_password)
         rand = str(round(time.time() * 1000))
@@ -184,20 +138,34 @@ for i in range(len(ty_username)):
         netdiskBonus = response.json()['netdiskBonus']
         if (response.json()['isSign'] == "false"):
             print(f"未签到，签到获得{netdiskBonus}M空间")
+            res1 = f"未签到，签到获得{netdiskBonus}M空间"
         else:
             print(f"已经签到过了，签到获得{netdiskBonus}M空间")
-    
-        response = s.get(url, headers=headers)
-        if ("errorCode" in response.text):
-            print(f"抽奖获得{get_prize_capacity(response)}")
-    
-        response = s.get(url2, headers=headers)
-        if ("errorCode" in response.text):
-            print(f"抽奖获得{get_prize_capacity(response)}")
-    
-        response = s.get(url3, headers=headers)
-        if ("errorCode" in response.text):
-            print(f"链接3抽奖获得{get_prize_capacity(response)}")
-    
+            res1 = f"已经签到过了，签到获得{netdiskBonus}M空间"
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Ecloud/8.6.3 Android/22 clientId/355325117317828 clientModel/SM-G930K imsi/460071114317824 clientChannelId/qq proVersion/1.0.6',
+            "Referer": "https://m.cloud.189.cn/zhuanti/2016/sign/index.jsp?albumBackupOpened=1",
+            "Host": "m.cloud.189.cn",
+            "Accept-Encoding": "gzip, deflate",
+        }
+        # 第一个抽奖链接
+        response1 = s.get(url, headers=headers)
+        data1 = response1.json()
+        description1 = data1['description']
+        print(f"第一个抽奖获得{description1}")
+        
+        # 第二个抽奖链接  
+        response2 = s.get(url2, headers=headers)
+        data2 = response2.json()
+        description2 = data2['description'] 
+        print(f"第二个抽奖获得{description2}")
+        
+        # 第三个抽奖链接
+        response3 = s.get(url3, headers=headers)  
+        data3 = response3.json()
+        description3 = data3['description']
+        print(f"第三个抽奖获得{description3}")
     if __name__ == "__main__":
+        
         main()
