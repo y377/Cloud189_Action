@@ -156,7 +156,7 @@ for i in range(len(ty_username)):
             "Host": "m.cloud.189.cn",
             "Accept-Encoding": "gzip, deflate",
         }
-        response = requests.get(url1)
+        response = requests.get(url)
         
         # 保留原有的错误处理逻辑
         if ("errorCode" in response.text):
