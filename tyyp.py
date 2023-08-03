@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -- coding: utf-8 --
 # @Time : 2023/4/8 9:23
 #作者：https://www.52pojie.cn/forum.php?mod=viewthread&tid=1784111&highlight=%C7%A9%B5%BD
@@ -27,8 +28,8 @@ import random
 import os
 
 # 变量 ty_username（手机号）,ty_password（密码）
-ty_username = os.getenv("TYYP_USERNAME")
-ty_password = os.getenv("TYYP_PSW")
+ty_username = os.getenv("TYYP_USERNAME").split('&')
+ty_password = os.getenv("TYYP_PSW").split('&')
 
 # 推送加
 #plustoken = os.getenv("plustoken")
@@ -44,7 +45,13 @@ s = requests.Session()
 for i in range(len(ty_username)):
     print(f'开始执行帐号{i+1}')
 
-
+    #推送函数
+    
+    #def Push(contents):
+        # 推送加
+    #    json = {"token": plustoken, 'title': '天翼云签到', 'content': contents.replace('\n', '<br>'), "template": "json"}
+    #    resp = requests.post(f'http://www.pushplus.plus/send', json=json, headers=headers).json()
+    #    print('push+推送成功' if resp['code'] == 200 else 'push+推送失败')
     def int2char(a):
         return BI_RM[a]
 
@@ -148,14 +155,6 @@ for i in range(len(ty_username)):
         r = s.get(redirect_url)
         return s
 
-  
-    def print_growth_size(time, response):
-        data =  json.loads(response.text)
-        if "errorCode" in data:
-            print("第{0}抽奖失败，可能是次数不足了".format(time))
-        else:
-            print("第{0}抽奖成功：获得{1}".format(time, data["prizeName"]))
-
 
     def main():
         s = login(ty_username, ty_password)
@@ -174,17 +173,58 @@ for i in range(len(ty_username)):
         netdiskBonus = response.json()['netdiskBonus']
         if (response.json()['isSign'] == "false"):
             print(f"未签到，签到获得{netdiskBonus}M空间")
+            res1 = f"未签到，签到获得{netdiskBonus}M空间"
         else:
             print(f"已经签到过了，签到获得{netdiskBonus}M空间")
-    
+            res1 = f"已经签到过了，签到获得{netdiskBonus}M空间"
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Ecloud/8.6.3 Android/22 clientId/355325117317828 clientModel/SM-G930K imsi/460071114317824 clientChannelId/qq proVersion/1.0.6',
+            "Referer": "https://m.cloud.189.cn/zhuanti/2016/sign/index.jsp?albumBackupOpened=1",
+            "Host": "m.cloud.189.cn",
+            "Accept-Encoding": "gzip, deflate",
+        }
         response = s.get(url, headers=headers)
-        print_growth_size(1,response)
-    
+        if ("errorCode" in response.text):
+            print(response.text)
+            res2 = ""
+        else:
+            description = response.json()['description']
+            print(f"抽奖获得{description}")
+            res2 = f"抽奖获得{description}"
         response = s.get(url2, headers=headers)
-        print_growth_size(2,response)
+        if ("errorCode" in response.text):
+            print(response.text)
+            res3 = ""
+        else:
+            description = response.json()['description']
+            print(f"抽奖获得{description}")
+            res3 = f"抽奖获得{description}"
 
         response = s.get(url3, headers=headers)
-        print_growth_size(3, response)
+        if ("errorCode" in response.text):
+            print(response.text)
+            res4 = ""
+        else:
+            description = response.json()['description']
+            print(f"链接3抽奖获得{description}")
+            res4 = f"链接3抽奖获得{description}"
+        #message = res1+res2+res3+res4
+        #Push(contents=message)
+
+
+    #def lambda_handler(event, context):  # aws default
+    #    main()
+
+
+    #def main_handler(event, context):  # tencent default
+     #   main()
+
+
+    #def handler(event, context):  # aliyun default
+    #    main()
+
 
     if __name__ == "__main__":
+        #time.sleep(random.randint(5, 30))
         main()
