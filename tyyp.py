@@ -160,26 +160,26 @@ for i in range(len(ty_username)):
         
         # 保留原有的错误处理逻辑
         if ("errorCode" in response.text):
-        print(response.text)
-        res2 = ""
+            print(response.text)
+            res2 = ""
         else:
         # 修改这里
-        data = response.json()
-        prize_name = data['prizeName']  
-        print("第一个抽奖获得:"+ prize_name)
-        res2 = f"第一个抽奖获得:{prize_name}"
+            data = response.json()
+            prize_name = data['prizeName']  
+            print("第一个抽奖获得:"+ prize_name)
+            res2 = f"第一个抽奖获得:{prize_name}"
         
         # 第二个抽奖也保留相同的错误处理逻辑
         response = requests.get(url2)
         if ("errorCode" in response.text):
-        print(response.text)
-        res3 = ""  
+            print(response.text)
+            res3 = ""  
         else:
         # 修改这里
-        data = response.json()
-        prize_name = data['prizeName']
-        print("第二个抽奖获得:"+ prize_name)
-        res3 = f"第二个抽奖获得:{prize_name}"
+            data = response.json()
+            prize_name = data['prizeName']
+            print("第二个抽奖获得:"+ prize_name)
+            res3 = f"第二个抽奖获得:{prize_name}"
         
         # 第三个抽奖也同样  
         # ......
