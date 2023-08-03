@@ -154,8 +154,14 @@ for i in range(len(ty_username)):
         redirect_url = r.json()['toUrl']
         r = s.get(redirect_url)
         return s
-
-
+    def get_prize_capacity(response):
+        try:
+            data = response.json()
+            if "description" in data:
+                return data["description"]
+        except Exception as e:
+            pass
+        return "未知容量"
     def main():
     s = login(ty_username, ty_password)
     rand = str(round(time.time() * 1000))
