@@ -157,74 +157,45 @@ for i in range(len(ty_username)):
 
 
     def main():
-        s = login(ty_username, ty_password)
-        rand = str(round(time.time() * 1000))
-        surl = f'https://api.cloud.189.cn/mkt/userSign.action?rand={rand}&clientType=TELEANDROID&version=8.6.3&model=SM-G930K'
-        url = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_SIGNIN&activityId=ACT_SIGNIN'
-        url2 = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_SIGNIN_PHOTOS&activityId=ACT_SIGNIN'
-        url3 = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_2022_FLDFS_KJ&activityId=ACT_SIGNIN'
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Ecloud/8.6.3 Android/22 clientId/355325117317828 clientModel/SM-G930K imsi/460071114317824 clientChannelId/qq proVersion/1.0.6',
-            "Referer": "https://m.cloud.189.cn/zhuanti/2016/sign/index.jsp?albumBackupOpened=1",
-            "Host": "m.cloud.189.cn",
-            "Accept-Encoding": "gzip, deflate",
-        }
-        response = s.get(surl, headers=headers)
-        netdiskBonus = response.json()['netdiskBonus']
-        if (response.json()['isSign'] == "false"):
-            print(f"未签到，签到获得{netdiskBonus}M空间")
-            res1 = f"未签到，签到获得{netdiskBonus}M空间"
-        else:
-            print(f"已经签到过了，签到获得{netdiskBonus}M空间")
-            res1 = f"已经签到过了，签到获得{netdiskBonus}M空间"
+    s = login(ty_username, ty_password)
+    rand = str(round(time.time() * 1000))
+    surl = f'https://api.cloud.189.cn/mkt/userSign.action?rand={rand}&clientType=TELEANDROID&version=8.6.3&model=SM-G930K'
+    url = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_SIGNIN&activityId=ACT_SIGNIN'
+    url2 = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_SIGNIN_PHOTOS&activityId=ACT_SIGNIN'
+    url3 = f'https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=TASK_2022_FLDFS_KJ&activityId=ACT_SIGNIN'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Ecloud/8.6.3 Android/22 clientId/355325117317828 clientModel/SM-G930K imsi/460071114317824 clientChannelId/qq proVersion/1.0.6',
+        "Referer": "https://m.cloud.189.cn/zhuanti/2016/sign/index.jsp?albumBackupOpened=1",
+        "Host": "m.cloud.189.cn",
+        "Accept-Encoding": "gzip, deflate",
+    }
+    response = s.get(surl, headers=headers)
+    netdiskBonus = response.json()['netdiskBonus']
+    if (response.json()['isSign'] == "false"):
+        print(f"未签到，签到获得{netdiskBonus}M空间")
+    else:
+        print(f"已经签到过了，签到获得{netdiskBonus}M空间")
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Ecloud/8.6.3 Android/22 clientId/355325117317828 clientModel/SM-G930K imsi/460071114317824 clientChannelId/qq proVersion/1.0.6',
-            "Referer": "https://m.cloud.189.cn/zhuanti/2016/sign/index.jsp?albumBackupOpened=1",
-            "Host": "m.cloud.189.cn",
-            "Accept-Encoding": "gzip, deflate",
-        }
-        response = s.get(url, headers=headers)
-        if ("errorCode" in response.text):
-            print(response.text)
-            res2 = ""
-        else:
-            description = response.json()['description']
-            print(f"抽奖获得{description}")
-            res2 = f"抽奖获得{description}"
-        response = s.get(url2, headers=headers)
-        if ("errorCode" in response.text):
-            print(response.text)
-            res3 = ""
-        else:
-            description = response.json()['description']
-            print(f"抽奖获得{description}")
-            res3 = f"抽奖获得{description}"
+    response = s.get(url, headers=headers)
+    if ("errorCode" in response.text):
+        print(response.text)
+    else:
+        description = response.json()['description']
+        print(f"抽奖获得{description}")
 
-        response = s.get(url3, headers=headers)
-        if ("errorCode" in response.text):
-            print(response.text)
-            res4 = ""
-        else:
-            description = response.json()['description']
-            print(f"链接3抽奖获得{description}")
-            res4 = f"链接3抽奖获得{description}"
-        #message = res1+res2+res3+res4
-        #Push(contents=message)
+    response = s.get(url2, headers=headers)
+    if ("errorCode" in response.text):
+        print(response.text)
+    else:
+        description = response.json()['description']
+        print(f"抽奖获得{description}")
 
+    response = s.get(url3, headers=headers)
+    if ("errorCode" in response.text):
+        print(response.text)
+    else:
+        description = response.json()['description']
+        print(f"链接3抽奖获得{description}")
 
-    #def lambda_handler(event, context):  # aws default
-    #    main()
-
-
-    #def main_handler(event, context):  # tencent default
-     #   main()
-
-
-    #def handler(event, context):  # aliyun default
-    #    main()
-
-
-    if __name__ == "__main__":
-        #time.sleep(random.randint(5, 30))
-        main()
+if __name__ == "__main__":
+    main()
