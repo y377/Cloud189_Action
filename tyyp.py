@@ -156,7 +156,7 @@ for i in range(len(ty_username)):
             "Host": "m.cloud.189.cn",
             "Accept-Encoding": "gzip, deflate",
         }
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         
         # 保留原有的错误处理逻辑
         if ("errorCode" in response.text):
@@ -170,7 +170,7 @@ for i in range(len(ty_username)):
             res2 = f"第一个抽奖获得:{prize_name}"
         
         # 第二个抽奖也保留相同的错误处理逻辑
-        response = requests.get(url2)
+        response = requests.get(url2, headers=headers)
         if ("errorCode" in response.text):
             print(response.text)
             res3 = ""  
